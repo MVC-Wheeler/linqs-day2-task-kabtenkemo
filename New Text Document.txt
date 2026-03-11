@@ -1,0 +1,219 @@
+﻿using static day4.Program;
+
+namespace day4
+{
+    internal class Program
+    {
+
+        public class Student
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public string Department { get; set; }
+            public double GPA { get; set; }
+        }
+
+        public class Course
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public int Credits { get; set; }
+        }
+
+        public class Enrollment
+        {
+            public int StudentId { get; set; }
+            public int CourseId { get; set; }
+        }
+
+        static void Main(string[] args)
+        {
+            var Students = new List<Student>
+{
+        new Student { Id = 1, Name = "Ahmed Ali", Age = 21, Department = "CS", GPA = 3.6 },
+    new Student { Id = 2, Name = "Sara Mohamed", Age = 20, Department = "IT", GPA = 3.2 },
+    new Student { Id = 3, Name = "Omar Hassan", Age = 22, Department = "CS", GPA = 2.8 },
+    new Student { Id = 4, Name = "Mona Adel", Age = 19, Department = "IS", GPA = 3.9 },
+    new Student { Id = 5, Name = "Youssef Kamal", Age = 23, Department = "CS", GPA = 2.4 },
+    new Student { Id = 6, Name = "Aya Mostafa", Age = 21, Department = "IT", GPA = 3.5 },
+    new Student { Id = 7, Name = "Hassan Mahmoud", Age = 24, Department = "IS", GPA = 1.9 },
+    new Student { Id = 8, Name = "Nada Fathy", Age = 20, Department = "CS", GPA = 3.1 },
+    new Student { Id = 9, Name = "Ali Samir", Age = 18, Department = "IT", GPA = 2.6 },
+    new Student { Id = 10, Name = "Reem Tarek", Age = 22, Department = "IS", GPA = 3.7 },
+    new Student { Id = 11, Name = "Amr Nabil", Age = 21, Department = "CS", GPA = 4.0 },
+    new Student { Id = 12, Name = "Laila Ashraf", Age = 19, Department = "IT", GPA = 2.2 }
+};
+
+            var courses = new List<Course>
+ {
+     new Course { Id = 1, Title = "C# Fundamentals", Credits = 3 },
+     new Course { Id = 2, Title = "OOP", Credits = 4 },
+     new Course { Id = 3, Title = "Databases", Credits = 3 },
+     new Course { Id = 4, Title = "ASP.NET MVC", Credits = 4 },
+     new Course { Id = 5, Title = "LINQ Deep Dive", Credits = 2 }
+ };
+
+            var enrollments = new List<Enrollment>
+{
+    new Enrollment { StudentId = 1, CourseId = 1 },
+    new Enrollment { StudentId = 1, CourseId = 2 },
+
+    new Enrollment { StudentId = 2, CourseId = 1 },
+    new Enrollment { StudentId = 2, CourseId = 3 },
+
+    new Enrollment { StudentId = 3, CourseId = 2 },
+
+    new Enrollment { StudentId = 4, CourseId = 4 },
+    new Enrollment { StudentId = 4, CourseId = 5 },
+
+    new Enrollment { StudentId = 6, CourseId = 3 },
+    new Enrollment { StudentId = 6, CourseId = 4 },
+
+    new Enrollment { StudentId = 8, CourseId = 1 },
+
+    new Enrollment { StudentId = 10, CourseId = 2 },
+    new Enrollment { StudentId = 10, CourseId = 3 },
+
+    new Enrollment { StudentId = 11, CourseId = 5 }
+};
+
+
+            //var students = from s in Students
+            //               select new { StudentName = s.Name };
+
+            //Console.WriteLine("All Students:");
+            //foreach (var student in students)
+            //{
+            //    Console.WriteLine(student.StudentName);
+            //}
+
+            //Console.WriteLine("-------------------------");
+            //var studentandgpa = from s in Students
+            //                    select new { StudentName = s.Name, StudentGPA = s.GPA };
+
+            //foreach (var student in studentandgpa)
+            //{
+            //    Console.WriteLine($"Name: {student.StudentName}, GPA: {student.StudentGPA}");
+            //}
+
+            //Console.WriteLine("-------------------------");
+
+
+            //bool GPA = Students.Any(s => s.GPA > 3.8);
+            //Console.WriteLine($"Is there any student with GPA greater than 3.8? {GPA}");
+            //Console.WriteLine("-------------------------");
+
+            //bool Age = Students.All(s => s.Age > 18);
+            //Console.WriteLine($"Are all students older than 18? {Age}");
+            //Console.WriteLine("-------------------------");
+
+            var Greater20 = Students.Where(s => s.Age > 20).ToList();
+            Console.WriteLine("Students older than 20:");
+            foreach (var student in Greater20)
+            {
+                Console.WriteLine(student.Name);
+            }
+            Console.WriteLine("-------------------------");
+
+            var csStudents = Students.Where(s => s.Department == "CS").ToList();
+            Console.WriteLine("Students in CS Department:");
+
+            foreach (var student in csStudents)
+            {
+                Console.WriteLine(student.Name);
+            }
+            Console.WriteLine("-------------------------");
+
+            var studentswithdeoartment = from s in Students
+                                         where s.Department == "CS"
+                                         select new { StudentName = s.Name, Department = s.Department };
+            Console.WriteLine("Students in CS Department with their department:");
+            foreach (var student in studentswithdeoartment)
+            {
+                Console.WriteLine($"Name: {student.StudentName}, Department: {student.Department}");
+            }
+            Console.WriteLine("-------------------------");
+            var orderbyGpa = Students.OrderBy(s => s.GPA).ToList();
+            Console.WriteLine("student sorted by GPA:");
+            foreach (var student in orderbyGpa)
+            {
+                Console.WriteLine(student.Name);
+            }
+
+            Console.WriteLine("-------------------------");
+
+            var orderbyGpaandname = Students.OrderByDescending(s => s.GPA).ThenBy(S => S.Name).ToList();
+            Console.WriteLine("student sorted by GPA and name:");
+            foreach (var student in orderbyGpaandname)
+            {
+                Console.WriteLine(student.Name);
+            }
+            Console.WriteLine("-------------------------");
+
+            var top5students = Students.OrderByDescending(s => s.GPA).Take(5).ToList();
+            Console.WriteLine("Top 5 students by GPA:");
+            foreach (var student in top5students)
+            {
+                Console.WriteLine(student.Name);
+            }
+            Console.WriteLine("-------------------------");
+
+            bool hasLowGPA = Students.Any(s => s.GPA < 2.0);
+            Console.WriteLine($"Is there any student with GPA less than 2.0? {hasLowGPA}");
+            Console.WriteLine("-------------------------");
+
+            bool greateroreq = Students.All(s => s.GPA >= 2.0);
+            Console.WriteLine($"Are all students have GPA greater than or equal 2.0? {greateroreq}");
+
+            Console.WriteLine("-------------------------");
+
+            var totalstudents = Students.Count();
+            Console.WriteLine($"Total number of students: {totalstudents}");
+            Console.WriteLine("-------------------------");
+
+            var studentnamelength = Students.Where(s => s.Name.Length > 5).ToList();
+            Console.WriteLine("Students with name length greater than 5:");
+            foreach (var student in studentnamelength)
+            {
+                Console.WriteLine(student.Name);
+            }
+            Console.WriteLine("-------------------------");
+
+            Console.WriteLine($"Total number of students: {totalstudents}");
+            Console.WriteLine("-------------------------");
+
+            var topstudent = Students.OrderByDescending(s => s.GPA).FirstOrDefault();
+            Console.WriteLine("Top Student by GPA:");
+            Console.WriteLine($"Student Name:{topstudent.Name} , GPA:{topstudent.GPA}");
+            Console.WriteLine("-------------------------");
+
+            var lessstudent = Students.OrderBy(s => s.GPA).FirstOrDefault();
+            Console.WriteLine("less Student by GPA:");
+            Console.WriteLine($"Student Name:{lessstudent.Name} , GPA:{lessstudent.GPA}");
+            Console.WriteLine("-------------------------");
+
+            var averageGPA = Students.Average(s => s.GPA);
+            Console.WriteLine($"Average GPA of all students: {averageGPA}");
+
+            Console.WriteLine("-------------------------");
+            var averageGPAinCS = Students.Where(s=>s.Department=="CS").Average(s => s.GPA);
+            Console.WriteLine($"Average GPA of CS students: {averageGPAinCS}");
+            Console.WriteLine("-------------------------");
+
+            var sumGPA = Students.Sum(s => s.GPA);
+            Console.WriteLine($"Sum of GPA of all students: {sumGPA}");
+            Console.WriteLine("-------------------------");
+
+            var gpagreateraverage = Students.Where(s => s.GPA > averageGPA).ToList();
+            Console.WriteLine("Students with GPA greater than average:");
+            foreach (var student in gpagreateraverage)
+            {
+                Console.WriteLine(student.Name);
+            }
+            Console.WriteLine("-------------------------");
+
+
+        }
+    }
+}
